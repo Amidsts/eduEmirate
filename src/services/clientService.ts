@@ -1,8 +1,47 @@
 import { clientError } from "../helpers/custom_error"
 import { responsehandler } from "../helpers/general"
 import blog from "../models/blogModel"
-import { createBlogValidator } from "../validators/blogValidator"
+import subscriber from "../models/subscriberModel"
+import {
+    getInTouchValidator,
+    createBlogValidator 
+} from "../validators/clientValidator"
+import { sendMail, mailTemplates } from "../utils/mailer"
 
+
+export async function getInTouchService(payload: {[key: string]: any}) {
+    try {
+        const {
+            name,
+            email,
+            phone_No,
+            category
+        } = getInTouchValidator(payload)
+
+        const get_In_Touch = await new subscriber({
+            name,
+            email,
+            phone_No,
+            category
+        }).save()
+// console.log(newBlog._id);
+
+        sendMail({
+            senderMail: get_In_Touch.email,
+            Subject: "New Subscriber",
+            Message: mailTemplates.getInTouch({
+                name: get_In_Touch.name,
+                phoneNo: get_In_Touch.phone_No,
+                service: get_In_Touch.category
+            })
+        })
+
+        return responsehandler("success", get_In_Touch)
+
+    } catch (error) {
+        return error
+    }
+}
 
 export async function createBlogService(payload: {[key: string]: any}, imgPayload: {[key: string]: any}) {
     try {
@@ -64,3 +103,4 @@ export async function getBlogService(blogId: string) {
         return error
     }
 }
+

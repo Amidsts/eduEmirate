@@ -1,9 +1,23 @@
 import { Request, Response } from "express";
 
 import {
-    createBlogService, getBlogService, getBlogsService 
-} from "../services/blogService";
+    createBlogService, 
+    getBlogService, 
+    getBlogsService,
+    getInTouchService 
+} from "../services/clientService";
 
+
+
+export async function getInTouchController(req: Request, res: Response) {
+    try {
+        const response = await getInTouchService(req.body)
+
+        return res.json(response)
+    } catch (error) {
+        res.send(error)
+    }
+}
 
 export async function createBlogController(req: Request, res: Response) {
     try {
