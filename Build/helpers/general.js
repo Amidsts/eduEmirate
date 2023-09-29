@@ -9,7 +9,7 @@ const custom_error_1 = require("./custom_error");
 dotenv_1.default.config();
 function ENV(secret) {
     const { env } = process;
-    return env[secret] || "";
+    return env.PORT || env[secret] || "";
 }
 exports.ENV = ENV;
 function validate(schema, inputData) {

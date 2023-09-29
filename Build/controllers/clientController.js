@@ -9,13 +9,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getBlogController = exports.getBlogsController = exports.createBlogController = void 0;
-const blogService_1 = require("../services/blogService");
+exports.getBlogController = exports.getBlogsController = exports.createBlogController = exports.getInTouchController = void 0;
+const clientService_1 = require("../services/clientService");
+function getInTouchController(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const response = yield (0, clientService_1.getInTouchService)(req.body);
+            return res.json(response);
+        }
+        catch (error) {
+            res.send(error);
+        }
+    });
+}
+exports.getInTouchController = getInTouchController;
 function createBlogController(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const { image } = res.locals;
-            const response = yield (0, blogService_1.createBlogService)(req.body, image);
+            const response = yield (0, clientService_1.createBlogService)(req.body, image);
             return res.json(response);
         }
         catch (error) {
@@ -27,7 +39,7 @@ exports.createBlogController = createBlogController;
 function getBlogsController(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const response = yield (0, blogService_1.getBlogsService)(parseInt(req.query.limit), parseInt(req.query.page));
+            const response = yield (0, clientService_1.getBlogsService)(parseInt(req.query.limit), parseInt(req.query.page));
             return res.json(response);
         }
         catch (error) {
@@ -39,7 +51,7 @@ exports.getBlogsController = getBlogsController;
 function getBlogController(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const response = yield (0, blogService_1.getBlogService)(req.params.blogId);
+            const response = yield (0, clientService_1.getBlogService)(req.params.blogId);
             return res.json(response);
         }
         catch (error) {
