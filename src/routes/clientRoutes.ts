@@ -8,7 +8,6 @@ import {
 } from "../controllers/clientController";
 import upload from "../config/multer";
 import { uploadImage } from "../middleware/fileUpload";
-import { get } from "mongoose";
 
 const router = Router()
 

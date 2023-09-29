@@ -7,7 +7,7 @@ dotenv.config()
 export function ENV(secret: string) {
     const {env} = process
 
-    return env[secret] || ""
+    return env.PORT || env[secret] || ""
 }
 
 export function validate(schema: {[key: string]: any}, inputData: {[key: string]: any}) {

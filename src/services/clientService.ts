@@ -6,7 +6,7 @@ import {
     getInTouchValidator,
     createBlogValidator 
 } from "../validators/clientValidator"
-import { sendMail, mailTemplates } from "../utils/mailer"
+import { sendMail, mailTemplates } from "../config/mailer"
 
 
 export async function getInTouchService(payload: {[key: string]: any}) {
@@ -35,8 +35,12 @@ export async function getInTouchService(payload: {[key: string]: any}) {
                 service: get_In_Touch.category
             })
         })
+        .then( (response) => {
+            console.log("nst: ", response);
+            
+        } )
 
-        return responsehandler("success", get_In_Touch)
+        return responsehandler("your informations has been received!")
 
     } catch (error) {
         return error

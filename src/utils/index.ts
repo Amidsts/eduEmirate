@@ -1,9 +1,9 @@
-import express from "express"
+import express, { Response, Request } from "express"
 import cors from "cors"
 import morgan from "morgan"
 import helmet from "helmet"
 
-import blogRoutes from "../routes/blogRoutes"
+import clientRoutes from "../routes/clientRoutes"
 
 
 
@@ -17,7 +17,10 @@ app
     .use(morgan("tiny"))
     .use(helmet())
 
+app.get("/", (req: Request, res: Response) => {
+    res.send("Hello from edu emirate")
+})
 
-app.use("/api/v1", blogRoutes)
+app.use("/api/v1", clientRoutes)
 
 export default app
