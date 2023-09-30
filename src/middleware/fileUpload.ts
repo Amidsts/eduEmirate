@@ -11,33 +11,27 @@ import { clientError } from "../helpers/custom_error"
 export async function uploadImage(req: Request, res: Response, next: NextFunction) {
 
     if (req.file) {
+    const buffer = req.file.buffer
 
-        const imagePath = req.file.path
+    v2.config({
+        cloud_name:  ENV("cloudinary_name"),
+        api_key: ENV("cloudinary_apiKey"),
+        api_secret: ENV("cloudinary_apiSecret")
+    })
 
-        v2.config({
-            cloud_name:  ENV("cloudinary_name"),
-            api_key: ENV("cloudinary_apiKey"),
-            api_secret: ENV("cloudinary_apiSecret")
-        })
-
-        v2.uploader.upload(imagePath)
-        .then( (uploadedImage) => {
+    v2.uploader.upload_stream(
+        (err, uploadedImage: any) => {
+            if (err) {
+                throw new clientError(`unable to upload image ${err.message}`, 400)
+            }
 
             res.locals.image = {
                 imageId: uploadedImage.public_id,
                 imageUrl: uploadedImage.secure_url
             }
-
-            fs.unlinkSync(imagePath) //delete image from disk storage
-
             next()
-        })
-        .catch( (err) => {
-            
-            throw new clientError(`unable to upload image ${err.message}`, 400)
-        })
-    
+        }
+    ).end(buffer)
        
     } else throw new clientError("pls upload an image", 400)
-
 }
